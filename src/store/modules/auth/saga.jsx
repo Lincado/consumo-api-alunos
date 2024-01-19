@@ -43,9 +43,6 @@ function* registerRequest({ payload }) {
         password: password || undefined,
       });
       toast.success('Conta alterada com sucesso!');
-      payload.callback("/login");
-
-      toast.error('Você precisa fazer login novamente.');
       yield put(actions.registerUpdatedSuccess({ nome, email, password }));
     } else {
       yield call(axios.post, `/users/${id}`, {

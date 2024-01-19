@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { FaHome, FaSignInAlt, FaUserAlt } from "react-icons/fa";
+import { FaHome, FaSignInAlt, FaUserAlt, FaCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -19,6 +19,7 @@ export default () => {
         <Link to="/login">
           <FaSignInAlt size={24} />
         </Link>
+        <FaCircle size={24} className="status-login"/>
       </Nav>
     </>
   )

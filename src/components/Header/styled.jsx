@@ -14,4 +14,8 @@ export const Nav = styled.nav`
     margin: 0 1rem 0 0;
     font-weight: bold;
   }
+
+  .status-login {
+    color: #66ff33;
+  }
 `
