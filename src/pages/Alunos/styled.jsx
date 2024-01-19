@@ -12,14 +12,20 @@ export const AlunoContainer = styled.div `
     padding: .5rem 0;
   }
   div + div {
-    border-top: .1rem solid #eee
+    border-top: .1rem solid #eee;
   }
   span {
     font-size: 1.6rem;
   }
   .icon {
-    color: ${colors.primaryColor}
+    color: ${colors.primaryColor};
   }
+
+  /* .icon-exclamation {
+    color: ${colors.primaryColor};
+    display: none;
+    cursor: pointer;
+  } */
 `
 
 
