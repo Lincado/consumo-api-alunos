@@ -3,12 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import get from "lodash";
 import { FaUserCircle, FaEdit, FaWindowClose, FaExclamation } from "react-icons/fa";
-import { useDispatch } from "react-redux"; // dispara ações pro redux ouvir
 
 import axios from "../../services/axios";
-import * as exampleAction from "../../store/modules/example/actions"
 import { Container } from "../../styles/GlobalStyles"
-import { AlunoContainer, ProfilePicture } from "./styled"
+import { AlunoContainer, ProfilePicture, NewStudent } from "./styled"
 import Loading from "../../components/Loading"
 import { toast } from "react-toastify";
 
@@ -63,6 +61,9 @@ export default () => {
       <Container>
         <Loading isLoading={isLoading} />
         <h1>Alunos</h1>
+
+        <NewStudent to="/aluno/">Novo aluno</NewStudent>
+
         <AlunoContainer>
           {alunos.map((aluno, index) => (
             <div key={aluno.id}>

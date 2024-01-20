@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { Link } from "react-router-dom";
 import * as colors from "../../config/colors";
 
 export const AlunoContainer = styled.div `
@@ -21,11 +21,6 @@ export const AlunoContainer = styled.div `
     color: ${colors.primaryColor};
   }
 
-  /* .icon-exclamation {
-    color: ${colors.primaryColor};
-    display: none;
-    cursor: pointer;
-  } */
 `
 
 
@@ -35,4 +30,11 @@ export const ProfilePicture = styled.div `
     height: 3.6rem;
     border-radius: 50%;
   }
+`
+
+export const NewStudent = styled(Link) `
+  display: block;
+  padding: 2rem 0 1rem 0;
+  font-size: 1.6rem;
+  color: ${colors.primaryColor};
 `

@@ -37,7 +37,7 @@ function* registerRequest({ payload }) {
 
   try {
     if (id) {
-      yield call(axios.put, `/users/:${id}`, {
+      yield call(axios.put, `/users/${id}`, {
         email,
         nome,
         password: password || undefined,
