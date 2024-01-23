@@ -1,14 +1,18 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import get from "lodash";
+import { FaUserCircle, FaEdit } from "react-icons/fa"
 
+import * as actions from "../../store/modules/auth/actions"
 import axios from "../../services/axios"
 import { Form } from "./styled"
 import { Container } from "../../styles/GlobalStyles"
 import { toast } from "react-toastify";
 import { isEmail, isInt, isFloat } from "validator";
 import Loading from "../../components/Loading";
+import { ProfilePicture } from "./styled";
 
 
 // eslint-disable-next-line react-refresh/only-export-components, react/display-name
@@ -16,6 +20,8 @@ export default function Aluno() {
   const { id }= useParams();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
@@ -32,8 +38,8 @@ export default function Aluno() {
       try {
         setIsLoading(true);
         const { data } = await axios.get(`/alunos/${id}`);
-        const Foto = get(data, 'Fotos[0].url', '');
-
+        const Foto = (data,"data.Fotos[0].url", "");
+        console.log(Foto)
         setFoto(Foto);
 
         setNome(data.nome);
@@ -57,7 +63,7 @@ export default function Aluno() {
     getData();
   }, [id, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let formErrors = false;
@@ -82,7 +88,7 @@ export default function Aluno() {
       toast.error("Campo idade aceita apenas números");
     }
 
-    if (isFloat(String(peso))) {
+    if (!isFloat(String(peso))) {
       formErrors = true;
       toast.error("Campo peso aceita apenas números");
     }
@@ -93,13 +99,44 @@ export default function Aluno() {
     }
 
     if (formErrors) return
-  }
 
+    try {
+      setIsLoading(true);
+      if(id) {
+        //se tiver id esta editando
+        await axios.put(`/alunos/${id}`, {nome, sobrenome, email, idade, peso, altura});
+        toast.success("Aluno(a) editado(a) com sucesso");
+      } else {
+        //se não tiver id esta criando
+        const { data } = await axios.post(`/alunos/`, {nome, sobrenome, email, idade, peso, altura});
+          toast.success("Aluno(a) criado(a) com sucesso");
+          navigate(`/aluno/${data.id}/edit`);
+      }
+      setIsLoading(false);
+    } catch(error) {
+      const data = get(error, "response.data", {});
+      const status = get(data, "response.status", 0);
+      const errors = get(data, "response.errors", []);
+
+      if(errors.length > 0) {
+        errors.map(err => toast.error(err));
+      } else {
+        toast.error("Erro desconhecido")
+      }
+
+      if(status === 401) dispatch(actions.loginFailure());
+      
+      setIsLoading(false);
+    }
+  }
   return (
     <>
       <Container>
         <Loading isLoading={isLoading} />
         <h1>{id ? "Editar Aluno" : "Novo Aluno"}</h1>
+
+        
+
         <Form onSubmit={handleSubmit}>
           <input type="text"
             value={nome}

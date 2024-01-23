@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import * as colors from "../../config/colors"
 
-export const Form = styled.form`
+export const Form = styled.form `
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
@@ -27,5 +27,33 @@ export const Form = styled.form`
 
   input + button {
     margin-top: 3rem;
+  }
+`
+
+export const ProfilePicture = styled.div `
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0 2rem;
+  position: relative;
+
+  img {
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+  }
+
+  a {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    bottom: 0;
+    color: #FFF;
+    background: ${colors.primaryColor};
+    width: 3.6rem;
+    border-radius: 50%;
+    padding: .5rem;
   }
 `
