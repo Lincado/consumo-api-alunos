@@ -5,7 +5,7 @@ import * as colors from "../../config/colors"
 export const Form = styled.form `
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
+  margin-top: 3rem;
   
   input {
     height: 4rem;
@@ -20,7 +20,7 @@ export const Form = styled.form `
       border: solid .1rem ${colors.primaryColor};
     }
   }
-  
+
   input + input {
     margin-top: 2rem;
   }
@@ -30,12 +30,17 @@ export const Form = styled.form `
   }
 `
 
+export const Title = styled.h1 `
+text-align: center;
+`
+
 export const ProfilePicture = styled.div `
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 0 2rem;
   position: relative;
+  margin-top: 2rem;
 
   img {
     width: 18rem;
@@ -57,3 +62,4 @@ export const ProfilePicture = styled.div `
     padding: .5rem;
   }
 `
+

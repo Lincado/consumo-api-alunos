@@ -7,21 +7,21 @@ import { FaUserCircle, FaEdit } from "react-icons/fa"
 
 import * as actions from "../../store/modules/auth/actions"
 import axios from "../../services/axios"
-import { Form } from "./styled"
+import { Form, ProfilePicture, Title } from "./styled"
 import { Container } from "../../styles/GlobalStyles"
 import { toast } from "react-toastify";
 import { isEmail, isInt, isFloat } from "validator";
 import Loading from "../../components/Loading";
-import { ProfilePicture } from "./styled";
+
 
 
 // eslint-disable-next-line react-refresh/only-export-components, react/display-name
 export default function Aluno() {
-  const { id }= useParams();
+  const { id } = useParams();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
@@ -30,16 +30,15 @@ export default function Aluno() {
   const [altura, setAltura] = useState("");
   const [foto, setFoto] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     if (!id) return;
 
-    async function getData() {
+    const getData = async () => {
       try {
         setIsLoading(true);
         const { data } = await axios.get(`/alunos/${id}`);
-        const Foto = data.Fotos[0].url || "";
-        console.log(Foto)
+        const Foto = data.Fotos[0]?.url || "";
         setFoto(Foto);
 
         setNome(data.nome);
@@ -54,14 +53,15 @@ export default function Aluno() {
         setIsLoading(false);
         const status = get(err, 'response.status', 0);
         const errors = get(err, 'response.data.errors', []);
+        if (errors.length > 0) errors.map(error => toast.error(errors));
 
-        if (status === 400) errors.map((error) => toast.error(error))
+        if (status === 401) dispatch(actions.loginFailure());
         navigate('/');
       }
     }
 
     getData();
-  }, [id, navigate]);
+  }, [id, navigate, dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,30 +102,30 @@ export default function Aluno() {
 
     try {
       setIsLoading(true);
-      if(id) {
+      if (id) {
         //se tiver id esta editando
-        await axios.put(`/alunos/${id}`, {nome, sobrenome, email, idade, peso, altura});
+        await axios.put(`/alunos/${id}`, { nome, sobrenome, email, idade, peso, altura });
         toast.success("Aluno(a) editado(a) com sucesso");
       } else {
         //se não tiver id esta criando
-        const { data } = await axios.post(`/alunos/`, {nome, sobrenome, email, idade, peso, altura});
-          toast.success("Aluno(a) criado(a) com sucesso");
-          navigate(`/aluno/${data.id}/edit`);
+        const { data } = await axios.post(`/alunos/`, { nome, sobrenome, email, idade, peso, altura });
+        toast.success("Aluno(a) criado(a) com sucesso");
+        navigate(`/aluno/${data.id}/edit`);
       }
       setIsLoading(false);
-    } catch(error) {
+    } catch (error) {
       const data = get(error, "response.data", {});
       const status = get(data, "response.status", 0);
       const errors = get(data, "response.errors", []);
 
-      if(errors.length > 0) {
+      if (errors.length > 0) {
         errors.map(err => toast.error(err));
       } else {
         toast.error("Erro desconhecido")
       }
 
-      if(status === 401) dispatch(actions.loginFailure());
-      
+      if (status === 401) dispatch(actions.loginFailure());
+
       setIsLoading(false);
     }
   }
@@ -133,9 +133,21 @@ export default function Aluno() {
     <>
       <Container>
         <Loading isLoading={isLoading} />
-        <h1>{id ? "Editar Aluno" : "Novo Aluno"}</h1>
+        <Title>{id ? "Editar Aluno" : "Novo Aluno"}</Title>
 
-        
+        {id && (
+          <ProfilePicture>
+            {foto ? (
+              <img src={foto} alt={nome} crossOrigin="" />
+            ) : (
+              <FaUserCircle size={180} />
+            )}
+            <Link to={`/fotos/${id}/edit`}>
+              <FaEdit size={24} />
+            </Link>
+          </ProfilePicture>
+        )}
+
 
         <Form onSubmit={handleSubmit}>
           <input type="text"
