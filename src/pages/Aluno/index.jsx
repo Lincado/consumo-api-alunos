@@ -38,7 +38,7 @@ export default function Aluno() {
       try {
         setIsLoading(true);
         const { data } = await axios.get(`/alunos/${id}`);
-        const Foto = (data,"data.Fotos[0].url", "");
+        const Foto = data.Fotos[0].url || "";
         console.log(Foto)
         setFoto(Foto);
 
