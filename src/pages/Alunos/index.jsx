@@ -23,6 +23,7 @@ export default () => {
         setIsLoading(false);
       } catch (e) {
         console.log("erro na requisição")
+        setIsLoading(false);
       }
     }
     getData();

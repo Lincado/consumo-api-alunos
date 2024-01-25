@@ -27,7 +27,6 @@ export default (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     let errorForm = false;
     if(!isEmail(email)) {
       errorForm = true;
